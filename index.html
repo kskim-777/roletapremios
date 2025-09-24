@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Prêmios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .wheel {
+            width: 300px;
+            height: 300px;
+            border: 5px solid #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        .wheel .slice {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .wheel .slice:nth-child(1) { transform: rotate(0deg); }
+        .wheel .slice:nth-child(2) { transform: rotate(45deg); }
+        .wheel .slice:nth-child(3) { transform: rotate(90deg); }
+        .wheel .slice:nth-child(4) { transform: rotate(135deg); }
+        .wheel .slice:nth-child(5) { transform: rotate(180deg); }
+        .wheel .slice:nth-child(6) { transform: rotate(225deg); }
+        .wheel .slice:nth-child(7) { transform: rotate(270deg); }
+        .wheel .slice:nth-child(8) { transform: rotate(315deg); }
+        .wheel .slice:nth-child(9) { transform: rotate(360deg); }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .popup.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="wheel">
+        <div class="slice" data-value="50">50</div>
+        <div class="slice" data-value="100">100</div>
+        <div class="slice" data-value="200">200</div>
+        <div class="slice" data-value="300">300</div>
+        <div class="slice" data-value="400">400</div>
+        <div class="slice" data-value="3000">3.000</div>
+        <div class="slice" data-value="5000">5.000</div>
+        <div class="slice" data-value="10000">10.000</div>
+    </div>
+    <button class="button" onclick="spinWheel()">Girar a Roleta</button>
+
+    <div class="popup" id="winPopup">
+        <p>Parabéns! Você ganhou R$10.000!</p>
+        <p>Para liberar seu prêmio, clique no botão abaixo para pagar a taxa de liberação.</p>
+        <button class="button" onclick="redirectToCheckout()">Pagar Taxa de Liberação</button>
+    </div>
+
+    <script>
+        function spinWheel() {
+            const slices = document.querySelectorAll('.wheel .slice');
+            const maxValue = 10000;
+            const randomIndex = Math.floor(Math.random() * slices.length);
+            const selectedSlice = slices[randomIndex];
+            const selectedValue = parseInt(selectedSlice.dataset.value, 10);
+
+            if (selectedValue === maxValue) {
+                document.getElementById('winPopup').classList.add('show');
+            } else {
+                alert(`Você ganhou R$${selectedValue}! Tente novamente para ganhar o prêmio máximo.`);
+            }
+        }
+
+        function redirectToCheckout() {
+            window.location.href = 'https://checkout.perfectpay.com'; // Substitua pela URL correta do checkout
+        }
+    </script>
+</body>
+</html>
